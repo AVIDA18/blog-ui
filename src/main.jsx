@@ -8,6 +8,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import '@mantine/carousel/styles.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

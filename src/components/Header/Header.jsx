@@ -85,7 +85,7 @@ export default function Header() {
   ));
 
   return (
-    <Box pb={120}>
+    <Box  >
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
         <Text>Logo</Text>
@@ -109,8 +109,6 @@ export default function Header() {
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Categories</Text>
                 </Group>
-
-                <Divider my="sm" />
 
                 <SimpleGrid cols={2} spacing={0}>
                   {links}
