@@ -7,27 +7,37 @@ export default function Home() {
 
     const trendingArticles = [
         {
+            category: 'Forest',
             image: 'https://thumbs.dreamstime.com/b/idyllic-summer-landscape-clear-mountain-lake-alps-45054687.jpg',
+            content: 'Capture stunning wildlife moments with these professional tips and tricks that will take your photos to the next level...',
             title: '10 Hidden Forests You Must See',
             author: 'John Doe',
         },
         {
+            category: 'Mountains',
             image: 'https://media.istockphoto.com/id/478627080/photo/evening-view-of-ama-dablam.jpg?s=612x612&w=0&k=20&c=GLKvtQt1JVoOB4yR2WI86_fYOmG8WObeZP_QV_gFG_0=',
+            content: 'Explore the beauty of Americas national parks, from the grand Grand Canyon to the lush forests of the Pacific Northwest...',
             title: 'Mountains for Meditation',
             author: 'Jane Smith',
         },
         {
+            category: 'Forest',
             image: 'https://thumbs.dreamstime.com/b/idyllic-summer-landscape-clear-mountain-lake-alps-45054687.jpg',
+            content: 'Capture stunning wildlife moments with these professional tips and tricks that will take your photos to the next level...',
             title: 'Wildlife Wonders Around the World',
             author: 'Alice Johnson',
         },
         {
+            category: 'Mountains',
             image: 'https://media.istockphoto.com/id/478627080/photo/evening-view-of-ama-dablam.jpg?s=612x612&w=0&k=20&c=GLKvtQt1JVoOB4yR2WI86_fYOmG8WObeZP_QV_gFG_0=',
+            content: 'Explore the beauty of Americas national parks, from the grand Grand Canyon to the lush forests of the Pacific Northwest...',
             title: 'Rivers Worth Rafting',
             author: 'Mark Twain',
         },
         {
+            category: 'Forest',
             image: 'https://thumbs.dreamstime.com/b/idyllic-summer-landscape-clear-mountain-lake-alps-45054687.jpg',
+            content: 'Capture stunning wildlife moments with these professional tips and tricks that will take your photos to the next level...',
             title: 'Best Hiking Trails for Fall',
             author: 'Sara Miles',
         },
@@ -127,6 +137,9 @@ export default function Home() {
                                         radius="md"
                                         mb="sm"
                                     />
+                                    <Text className={classes.category} size="xs">
+                                        <span className={classes.topContentCategory}>{article.category}</span>
+                                    </Text>
                                     <Title order={4}>{article.title}</Title>
                                     <Text size="sm" mb="xs">By {article.author}</Text>
                                     <Button variant="light" color="blue" size="xs">
@@ -140,32 +153,37 @@ export default function Home() {
             </Grid>
 
             {/* Explore More Articles Section */}
-            <Grid m="md" gutter="md">
-                <Grid.Col span={12}>
-                    <Title order={2}>Explore More Articles</Title>
-                </Grid.Col>
-                <Grid.Col span={4} sm={12} md={4}>
-                    <Paper shadow="xs" p="md" radius="md">
-                        <Title order={4}>Top 5 National Parks in the US</Title>
-                        <Text size="sm">By Author Name</Text>
-                        <Button variant="light" color="blue" mt="md">Read more</Button>
-                    </Paper>
-                </Grid.Col>
-                <Grid.Col span={4} sm={12} md={4}>
-                    <Paper shadow="xs" p="md" radius="md">
-                        <Title order={4}>The Best Trails for Beginners</Title>
-                        <Text size="sm">By Author Name</Text>
-                        <Button variant="light" color="blue" mt="md">Read more</Button>
-                    </Paper>
-                </Grid.Col>
-                <Grid.Col span={4} sm={12} md={4}>
-                    <Paper shadow="xs" p="md" radius="md">
-                        <Title order={4}>Wildlife Photography Tips</Title>
-                        <Text size="sm">By Author Name</Text>
-                        <Button variant="light" color="blue" mt="md">Read more</Button>
-                    </Paper>
-                </Grid.Col>
-            </Grid>
+            <div className={classes.exploreArticlesSection}>
+                <Grid m="md" gutter="md" justify="center">
+                    {trendingArticles.map((article, index) => (
+                        <Grid.Col key={index} span={4} sm={12} md={4}>
+                            <Paper className={classes.exploreArticlesCard}>
+                                <Image src={article.image} alt={article.title} width={300} height={200} />
+                                <a href="#" className={classes.exploreArticlesCardCategory}>
+                                    <span>
+                                        <Text className={classes.exploreArticlesCardCategoryText}>
+                                            {article.category}
+                                        </Text>
+                                    </span>
+                                </a>
+                                <a href="#" className={classes.exploreArticlesCardTitle}>
+                                    <Title order={4} className={classes.exploreArticlesCardTitleText}>
+                                        {article.title}
+                                    </Title>
+                                </a>
+                                <Text className={classes.exploreArticlesCardAuthor}>By {article.author}</Text>
+                                <Text className={classes.exploreArticlesCardContent}>
+                                    {article.content}
+                                </Text>
+                            </Paper>
+                        </Grid.Col>
+                    ))}
+                </Grid>
+            </div>
+
+
+
+
         </div>
     );
 }

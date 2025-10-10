@@ -25,8 +25,72 @@
   text-transform: uppercase;
 }
 
-.topContentCategory{
-    padding: 5px;
-    background-color: #3daff3;
-    color: white;
+.topContentCategory {
+  padding: 5px;
+  background-color: #3daff3;
+  color: white;
+}
+
+/* last section css */
+
+/* Container for all articles */
+.exploreArticlesSection {
+  background-color: rgb(219, 202, 202);
+  padding: 40px 0;
+}
+
+/* Each article card */
+.exploreArticlesCard {
+  background-color: white !important;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Title of the article */
+.exploreArticlesCardTitleText {
+  color: black;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.3s ease;
+  cursor: pointer;
+}
+
+/* Underline on hover */
+.exploreArticlesCardTitleText:hover {
+  border-bottom: 1px solid #d3d1d1;
+}
+
+/* Link around the article title */
+.exploreArticlesCardTitle {
+  text-decoration: none;
+}
+
+/* Author name text */
+.exploreArticlesCardAuthor {
+  color: #858585;
+}
+
+/* Content text */
+.exploreArticlesCardContent {
+  font-style: italic;
+  color: #858585;
+}
+
+/* Category link */
+.exploreArticlesCardCategory {
+  text-decoration: none;
+}
+
+/* Category text */
+.exploreArticlesCardCategoryText {
+  color: #0054A5;
+  cursor: pointer;
+  text-align: left;
+  margin-left: 5px !important;
+}
+
+.exploreArticlesCardCategoryText:hover {
+  text-decoration: underline;
 }
