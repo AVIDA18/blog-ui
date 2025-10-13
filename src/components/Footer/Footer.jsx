@@ -7,26 +7,41 @@ import {
   ActionIcon,
   Container,
   Group,
-  Text
+  Text,
+  Image
 } from '@mantine/core';
 import classes from './Footer.module.css';
+import logo from '../../assets/logo.png';
 
 const data = [
   {
-    title: 'Category',
+    title: 'CATEGORIES',
     links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
-      { label: 'Email newsletter', link: '#' },
-      { label: 'GitHub discussions', link: '#' },
-      { label: 'Contribute', link: '#' },
-      { label: 'Media assets', link: '#' },
-      { label: 'Changelog', link: '#' },
-      { label: 'Releases', link: '#' },
+      { label: 'Nature', link: '#' },
+      { label: 'Mountains', link: '#' },
+      { label: 'Forest', link: '#' },
+      { label: 'Wildlife', link: '#' },
+      { label: 'Adventure', link: '#' },
+      { label: 'Travel', link: '#' },
+      { label: 'Photography', link: '#' },
+      { label: 'Hiking', link: '#' },
+      { label: 'Camping', link: '#' },
+      { label: 'Ocean', link: '#' },
+      { label: 'Desert', link: '#' },
+      { label: 'Rivers', link: '#' },
+      { label: 'Lakes', link: '#' },
+      { label: 'Valleys', link: '#' },
+      { label: 'Caves', link: '#' },
+      { label: 'Beaches', link: '#' },
+      { label: 'Islands', link: '#' },
+      { label: 'Waterfalls', link: '#' },
+      { label: 'Glaciers', link: '#' },
+      { label: 'Volcanoes', link: '#' },
+      { label: 'Canyons', link: '#' },
+      { label: 'Cliffs', link: '#' },
+      { label: 'Meadows', link: '#' },
+      { label: 'Jungles', link: '#' },
+      { label: 'Tundra', link: '#' },
     ],
   },
 ];
@@ -57,7 +72,9 @@ export function FooterLinks() {
     <footer className={classes.footer}>
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          <Text>Logo</Text>
+          <a href="/">
+            <Image src={logo} alt="Logo" width={120} style={{ cursor: 'pointer' }} />
+          </a>
           <Text size="xs" c="dimmed" className={classes.description}>
             Build fully functional accessible web applications faster than ever
           </Text>

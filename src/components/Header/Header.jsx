@@ -18,6 +18,7 @@ import {
   Drawer,
   Group,
   HoverCard,
+  Image,
   ScrollArea,
   SimpleGrid,
   Text,
@@ -27,6 +28,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Header.module.css';
+import logohead from '../../assets/logohead.png';
 
 const mockdata = [
   {
@@ -88,7 +90,9 @@ export default function Header() {
     <Box  >
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-        <Text>Logo</Text>
+        <a href="/">
+          <Image src={logohead} alt="Logo" width={70} height={50} fit="contain" style={{ maxWidth: '70px', flexShrink: 0, cursor: 'pointer' }} />
+        </a>
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="/home" className={classes.link}>
               Home
@@ -126,8 +130,7 @@ export default function Header() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" component="a" href="/login">Log in</Button>
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -168,8 +171,7 @@ export default function Header() {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" component="a" href="/login">Log in</Button>
           </Group>
         </ScrollArea>
       </Drawer>

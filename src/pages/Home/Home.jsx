@@ -48,7 +48,7 @@ export default function Home() {
             {/* Hero Section */}
             <Grid m="md" gutter="md" align="stretch">
                 {/* Left large card */}
-                <Grid.Col span={8} sm={12}>
+                <Grid.Col span={{ base: 12, md: 8 }}>
                     <Paper
                         shadow="md"
                         p="xl"
@@ -79,7 +79,7 @@ export default function Home() {
                 </Grid.Col>
 
                 {/* Right stacked cards */}
-                <Grid.Col span={4} sm={12}>
+                <Grid.Col span={{ base: 12, md: 4 }}>
                     <Stack spacing="md" style={{ height: cardHeight }}>
                         {[1, 2].map((item) => (
                             <Paper
@@ -156,16 +156,16 @@ export default function Home() {
             <div className={classes.exploreArticlesSection}>
                 <Grid m="md" gutter="md" justify="center">
                     {trendingArticles.map((article, index) => (
-                        <Grid.Col key={index} span={4} sm={12} md={4}>
+                        <Grid.Col key={index} span={{ base: 12, sm: 6, md: 4 }}>
                             <Paper className={classes.exploreArticlesCard}>
-                                <Image src={article.image} alt={article.title} width={300} height={200} />
-                                <a href="#" className={classes.exploreArticlesCardCategory}>
-                                    <span>
+                                <div className={classes.imageContainer}>
+                                    <Image src={article.image} alt={article.title} height={200} fit="cover" />
+                                    <a href="#" className={classes.exploreArticlesCardCategory}>
                                         <Text className={classes.exploreArticlesCardCategoryText}>
                                             {article.category}
                                         </Text>
-                                    </span>
-                                </a>
+                                    </a>
+                                </div>
                                 <a href="#" className={classes.exploreArticlesCardTitle}>
                                     <Title order={4} className={classes.exploreArticlesCardTitleText}>
                                         {article.title}
