@@ -13,12 +13,12 @@ function Home() {
                 );
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch Blogss");
+                    throw new Error("Failed to fetch Blogs");
                 }
 
                 const result = await response.json();
                 
-                setBlogs(result.data);
+                setBlogs(result);
 
             } catch (err) {
                 setError(err.message);
@@ -34,12 +34,14 @@ function Home() {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <div className="Blogss-container">
-            {Blogs.map((p) => (
+        <div className="Blogs-container">
+            {Blogs.data.map((p) => (
                 <div key={p.id} className="Blogs-card">
-                    <span className="Blogs-id">#{p.id}</span>
+                    <h2 className="Blogs-id">#{p.id}</h2>
                     <h3 className="Blogs-title">{p.title}</h3>
+                    <h3 className="Blogs-author">{p.actualAuthor ?? p.author.userName}</h3>
                     <h3 className="Blogs-date">{p.blogDate}</h3>
+                    <h3 className="Blogs-category">{p.blogCategory.categoryName}</h3>
                     <p className="Blogs-body">{p.content}</p>
                 </div>
             ))}
