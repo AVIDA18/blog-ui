@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Home() {
     const [Blogs, setBlogs] = useState([]);
@@ -38,7 +39,7 @@ function Home() {
             {Blogs.data.map((p) => (
                 <div key={p.id} className="Blogs-card">
                     <h2 className="Blogs-id">#{p.id}</h2>
-                    <h3 className="Blogs-title">{p.title}</h3>
+                    <h3 className="Blogs-title"> <Link to={`/article/${p.slug}`}>{p.title}</Link></h3>
                     <h3 className="Blogs-author">{p.actualAuthor ?? p.author.userName}</h3>
                     <h3 className="Blogs-date">{p.blogDate}</h3>
                     <h3 className="Blogs-category">{p.blogCategory.categoryName}</h3>
