@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 function Categories() {
 
@@ -39,7 +40,7 @@ function Categories() {
         {blogCategories.map((c)=>(
             <div key={c.id} className='Categories-card'>
                 <h2 className='Category-id'>#{c.id}</h2>
-                <h3 className='Category-name'>{c.categoryName}</h3>
+                <h3 className='Category-name'><Link to={`/articleFilter/${c.categoryName}`}>{c.categoryName}</Link></h3>
                 <p className='Category-description'>{c.description}</p>
             </div>
         ))}
