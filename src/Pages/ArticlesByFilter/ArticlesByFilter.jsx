@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ArticlesByFilter = () => {
+
+    const {filter} = useParams();
+
     const [articlesByFilter, setArticlesByFilter] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -9,7 +12,7 @@ const ArticlesByFilter = () => {
     useEffect(() => {
         const fetchArticlesByFilter = async () => {
             try {
-                const response = await fetch("http://localhost:5092/api/Blog/getBlogs?page=1&pageSize=10");
+                const response = await fetch(`http://localhost:5092/api/Blog/getBlogs?page=1&pageSize=10&categorySlug=${filter}`);
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch articles.");
