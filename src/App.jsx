@@ -14,9 +14,8 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/home' element={<Home/>}/>
         <Route path='/categories' element={<Categories/>}/>
-        <Route path='/articlesByFilters' element={<ArticlesByFilter/>}/>
         <Route path='/article/:slug' element={<SingleArticle/>}/>
-        <Route path='/articleFilter/:filterName' element={<ArticlesByFilter/>}/>
+        <Route path='/categories/:filter' element={<ArticlesByFilter/>}/>
       </Routes>
     </>
   )
