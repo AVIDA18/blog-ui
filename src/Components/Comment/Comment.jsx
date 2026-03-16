@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
 const Comment = (props) => {
-
-    console.log(blogId);
     const [comments, setComments] = useState([]);
     const [showComments, setShowComments] = useState(false);
-    const [blogId, setBlogId] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const [newComment, setNewComment] = useState('');
+
     const fetchBlogComments = async () => {
-        setBlogId(props.blogId);
         setLoading(true);
+        setNewComment('');
 
         try {
             const response = await fetch(
-                `http://localhost:5092/api/BlogComment/${blogId}/comments`
+                `http://localhost:5092/api/BlogComment/${props.blogId}/comments`
             );
 
             if (!response.ok) {
@@ -26,13 +25,48 @@ const Comment = (props) => {
 
             setComments(result);
             setShowComments(true);
-
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    const addBlogComment = async (e) => {
+
+        e.preventDefault();
+
+        try {
+            const response = await fetch(
+                `http://localhost:5092/api/BlogComment/AddBlogComment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer aeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NzM3NjMwODMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTA5MiIsImF1ZCI6IkJsb2dBcGlVc2VycyJ9.5k9KJx5L6zxIGKN-vtsBGSnhrN9u95sHTl-cfEmdVX4`
+                },
+                body: JSON.stringify({
+                    comment: newComment,
+                    blogId: props.blogId
+                })
+            }
+            );
+
+            if (response.status === 401) {
+                alert("Please Log In to comment.")
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Failed to post a comment.")
+            }
+
+            fetchBlogComments();
+
+        }
+        catch (err) {
+            setError(err.message);
+        }
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -49,13 +83,23 @@ const Comment = (props) => {
                     {comments.length === 0 ? (
                         <p>No comments yet</p>
                     ) : (
-                        comments.map((comment) => (
-                            <div key={comment.id} className="comment">
-                                <h5>{comment.userName}</h5>
-                                <p>{comment.content}</p>
+                        comments.map((c) => (
+                            <div>
+                                <h5>{c.user.userName}</h5>
+                                <p>{c.comment} at {c.commentedAt}</p>
                             </div>
                         ))
                     )}
+                    <form onSubmit={addBlogComment}>
+                        <textarea
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Comment Here..."
+                            required
+                        />
+
+                        <button type="submit">Add Comment</button>
+                    </form>
                 </div>
             )}
 
