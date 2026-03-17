@@ -86,7 +86,8 @@ const Comment = (props) => {
                         comments.map((c) => (
                             <div>
                                 <h5>{c.user.userName}</h5>
-                                <p>{c.comment} at {c.commentedAt}</p>
+                                <p>{c.comment}</p>
+                                <p>{c.commentedAt}</p>
                             </div>
                         ))
                     )}

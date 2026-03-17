@@ -7,14 +7,14 @@ function Categories() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() =>{
-        const fetchCategories = async() => {
-            try{
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
                 const response = await fetch(
                     "http://localhost:5092/api/BlogCategory/listBlogCategories"
                 );
 
-                if(!response.ok){
+                if (!response.ok) {
                     throw new Error("Failed to fetch blog categories")
                 }
 
@@ -22,31 +22,39 @@ function Categories() {
 
                 setBlogCategories(result);
             }
-            catch(err){
+            catch (err) {
                 setError(err.message);
-            }finally{
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchCategories();
-    },[]);
+    }, []);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
-  return (
-    <div className='Categories-container'>
-        {blogCategories.map((c)=>(
-            <div key={c.id} className='Categories-card'>
-                <h2 className='Category-id'>#{c.id}</h2>
-                <h3 className='Category-name'><Link to={`/categories/${c.slug}`}>{c.categoryName}</Link></h3>
-                <p className='Category-description'>{c.description}</p>
-            </div>
-        ))}
+    return (
+        <div className='Categories-container'>
+            {blogCategories.length === 0 ? (
+                <h1>No categories found.</h1>
+            ) : (
+                <>
+                    {
+                        blogCategories.map((c) => (
+                            <div key={c.id} className='Categories-card'>
+                                <h2 className='Category-id'>#{c.id}</h2>
+                                <h3 className='Category-name'><Link to={`/categories/${c.slug}`}>{c.categoryName}</Link></h3>
+                                <p className='Category-description'>{c.description}</p>
+                            </div>
+                        ))
+                    }
 
-    </div>
-  )
+                </>
+            )}
+        </div>
+    )
 }
 
 export default Categories
