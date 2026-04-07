@@ -50,7 +50,7 @@ const Comment = (props) => {
                 })
             }
             );
-
+        
             if (response.status === 401) {
                 alert("Please Log In to comment.")
                 return;

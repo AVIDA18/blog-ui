@@ -50,15 +50,15 @@ const SingleArticle = () => {
                 {singleArticle.images.map((p) => (
                     <img
                         src={`http://localhost:5092/${p.imageUrl}`}
-                        alt={p.altTxt}
+                        // alt={p.altTxt}
                         className="SingleBlog-image" />
                 ))}
 
                 <div>
-                    <h4 className="SingleBlog-category">#{singleArticle.blogCategory.categoryName}</h4>
+                    <h4 className="SingleBlog-category">#{singleArticle.category.categoryName}</h4>
                     <h4 className="SingleBlog-date">{singleArticle.blogDate}</h4>
                     <h1 className="SingleBlog-title">{singleArticle.title}</h1>
-                    <h3 className="SingleBlog-author">{singleArticle.actualAuthor ?? singleArticle.author.userName}</h3>
+                    <h3 className="SingleBlog-author">{singleArticle.actualAuthor ?? singleArticle.users.userName}</h3>
                     <p className="SingleBlog-body">{singleArticle.content}</p>
                 </div>
             </div>
