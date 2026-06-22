@@ -1,71 +1,82 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { api } from '../../api/api';
 import Comment from '../../Components/Comment/Comment';
+import LikeButton from '../../Components/LikeButton/LikeButton';
+import Carousel from '../../Components/Carousel/Carousel';
 
 const SingleArticle = () => {
+  const { slug } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const { slug } = useParams();
+  useEffect(() => {
+    const fetchArticle = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await api(`/Blog/getBlogsByTitleSlug/${slug}`);
+        setArticle(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticle();
+  }, [slug]);
 
-    const [singleArticle, setSingleArticle] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  if (loading) return <div className="spinner" />;
+  if (error) return <div className="page-wrapper"><div className="container"><div className="alert alert-error">{error}</div></div></div>;
+  if (!article) return <div className="page-wrapper"><div className="container"><div className="empty-state"><h2>Article not found</h2></div></div></div>;
 
-    // const [commentsLoading, setCommentsLoading] = useState(false);
-    // const [commentsError, setCommentsError] = useState(null);
-    // const [comments, setComments] = useState([]);
-    // const [showComments, setShowComments] = useState(false);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+  };
 
-    useEffect(() => {
-        const fetchSingleBlog = async () => {
+  return (
+    <div className="page-wrapper">
+      <div className="container">
+        <div className="article-header">
+          {article.images?.length > 0 && (
+            <Carousel images={article.images} alt={article.title} />
+          )}
 
-            try {
-                const response = await fetch(
-                    `http://localhost:5092/api/Blog/getBlogsByTitleSlug/${slug}`
-                );
+          <div className="article-meta">
+            {article.category && (
+              <Link to={`/categories/${article.category.slug}`} className="article-category">
+                {article.category.categoryName}
+              </Link>
+            )}
+            <span className="article-date">{formatDate(article.blogDate)}</span>
+          </div>
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch single article");
-                }
+          <h1 className="article-title">{article.title}</h1>
 
-                const result = await response.json();
+          <div className="article-author">
+            by <strong>{article.actualAuthor || article.users?.userName || 'Anonymous'}</strong>
+          </div>
+          {article.source && <div className="article-source">Source: {article.source}</div>}
 
-                setSingleArticle(result);
+          <div className="article-actions">
+            <LikeButton blogId={article.id} />
+          </div>
+        </div>
 
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        <div className="article-content">
+          {article.content?.split('\n').map((paragraph, i) => (
+            paragraph.trim() ? <p key={i}>{paragraph}</p> : null
+          ))}
+        </div>
 
-        fetchSingleBlog();
-    }, [slug]);
+        <Comment blogId={article.id} />
+      </div>
+    </div>
+  );
+};
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-
-    return (
-        <>
-            <div className="SingleBlog-container">
-                {singleArticle.images.map((p) => (
-                    <img
-                        src={`http://localhost:5092/${p.imageUrl}`}
-                        // alt={p.altTxt}
-                        className="SingleBlog-image" />
-                ))}
-
-                <div>
-                    <h4 className="SingleBlog-category">#{singleArticle.category.categoryName}</h4>
-                    <h4 className="SingleBlog-date">{singleArticle.blogDate}</h4>
-                    <h1 className="SingleBlog-title">{singleArticle.title}</h1>
-                    <h3 className="SingleBlog-author">{singleArticle.actualAuthor ?? singleArticle.users.userName}</h3>
-                    <p className="SingleBlog-body">{singleArticle.content}</p>
-                </div>
-            </div>
-
-            <Comment blogId = {singleArticle.id}/>
-        </>
-    );
-}
-
-export default SingleArticle
+export default SingleArticle;
