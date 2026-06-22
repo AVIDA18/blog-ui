@@ -1,61 +1,89 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { api } from '../../api/api';
 
 const ArticlesByFilter = () => {
+  const { filter } = useParams();
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const {filter} = useParams();
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await api(`/Blog/getBlogs?page=1&pageSize=50&categorySlug=${filter}`);
+        setArticles(result.data || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, [filter]);
 
-    const [articlesByFilter, setArticlesByFilter] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const truncate = (text, len = 200) => {
+    if (!text) return '';
+    return text.length > len ? text.substring(0, len) + '...' : text;
+  };
 
-    useEffect(() => {
-        const fetchArticlesByFilter = async () => {
-            try {
-                const response = await fetch(`http://localhost:5092/api/Blog/getBlogs?page=1&pageSize=10&categorySlug=${filter}`);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric',
+    });
+  };
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch articles.");
-                }
+  const categoryName = articles[0]?.blogCategory?.categoryName || filter;
 
-                const result = await response.json();
+  return (
+    <div className="page-wrapper">
+      <div className="container">
+        <h1 className="page-title">{categoryName}</h1>
+        <p className="page-subtitle">Articles in this category.</p>
 
-                setArticlesByFilter(result);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+        {loading && <div className="spinner" />}
+        {error && <div className="alert alert-error">{error}</div>}
 
-        fetchArticlesByFilter();
+        {!loading && !error && articles.length === 0 && (
+          <div className="empty-state">
+            <h2>No articles found for this category.</h2>
+          </div>
+        )}
 
-    }, [])
+        {!loading && !error && articles.length > 0 && (
+          <div className="blog-grid">
+            {articles.map((blog) => (
+              <article key={blog.id} className="blog-card">
+                {blog.images?.[0] && (
+                  <img
+                    className="blog-card-image"
+                    src={`http://localhost:5092/${blog.images[0].imageUrl}`}
+                    alt={blog.images[0].altTxt || blog.title}
+                  />
+                )}
+                <div className="blog-card-body">
+                  <div className="blog-card-meta">
+                    <span className="blog-card-category">{blog.blogCategory?.categoryName}</span>
+                    <span>{formatDate(blog.blogDate)}</span>
+                  </div>
+                  <h2 className="blog-card-title">
+                    <Link to={`/article/${blog.slug}`}>{blog.title}</Link>
+                  </h2>
+                  <p className="blog-card-excerpt">{truncate(blog.content)}</p>
+                  <div className="blog-card-footer">
+                    <span>{blog.actualAuthor || blog.author?.userName || 'Anonymous'}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-
-    return (
-        <div className="Blogs-container">
-
-            {articlesByFilter.data.length === 0 ? (
-                <h1>No articles found for this category.</h1>
-            ) : (
-                <>
-                    <h1>#{articlesByFilter.data[0].blogCategory.categoryName}</h1>
-                    {articlesByFilter.data.map((p) => (
-                        <div key={p.id} className="Blogs-card">
-                            <h3 className="Blogs-title"> <Link to={`/article/${p.slug}`}>{p.title}</Link></h3>
-                            <h3 className="Blogs-author">{p.actualAuthor ?? p.author.userName}</h3>
-                            <h3 className="Blogs-date">{p.blogDate}</h3>
-                            <h3 className="Blogs-category">{p.blogCategory.categoryName}</h3>
-                            <p className="Blogs-body">{p.content}</p>
-                        </div>
-                    ))}
-                </>
-            )}
-        </div>
-    );
-}
-
-export default ArticlesByFilter
+export default ArticlesByFilter;
